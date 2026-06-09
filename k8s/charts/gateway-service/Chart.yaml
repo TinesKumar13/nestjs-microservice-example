@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gateway-service
+description: Gateway microservice — HTTP REST entry point, gRPC client to identity-service, NATS subscriber
+type: application
+version: 0.1.0
+appVersion: "0.0.1"

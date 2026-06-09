@@ -1,0 +1,60 @@
+replicaCount: 1
+
+image:
+  repository: localhost:5001/identity-service
+  tag: "0.0.1"
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: ""
+
+service:
+  type: ClusterIP
+  port: 50051
+
+config:
+  nodeEnv: production
+  grpcPort: "50051"
+  identityServicePort: "50051"
+  postgresHost: postgres-postgresql.infra.svc.cluster.local
+  postgresPort: "5432"
+  postgresDb: microservices
+  natsServers: nats://nats.infra.svc.cluster.local:4222
+
+secret:
+  postgresUser: postgres
+  postgresPassword: postgres
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+livenessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 20
+  failureThreshold: 3
+
+readinessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
+
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+
+pdb:
+  enabled: false
+  minAvailable: 1
+
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
