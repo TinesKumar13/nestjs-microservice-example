@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "identity-service.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "identity-service.labels" . | nindent 4 }}
+data:
+  NODE_ENV: {{ .Values.config.nodeEnv | quote }}
+  IDENTITY_SERVICE_PORT: {{ .Values.config.identityServicePort | quote }}
+  GRPC_IDENTITY_PORT: {{ .Values.config.grpcPort | quote }}
+  POSTGRES_HOST: {{ .Values.config.postgresHost | quote }}
+  POSTGRES_PORT: {{ .Values.config.postgresPort | quote }}
+  POSTGRES_DB: {{ .Values.config.postgresDb | quote }}
+  NATS_SERVERS: {{ .Values.config.natsServers | quote }}

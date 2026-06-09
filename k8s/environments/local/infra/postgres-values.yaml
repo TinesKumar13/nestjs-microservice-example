@@ -1,0 +1,30 @@
+auth:
+  username: postgres
+  password: postgres
+  database: microservices
+
+primary:
+  initdb:
+    scripts:
+      00-init-schemas.sql: |
+        CREATE SCHEMA IF NOT EXISTS identity;
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  persistence:
+    enabled: true
+    size: 1Gi
+
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+metrics:
+  enabled: false

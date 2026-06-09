@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build gateway-service
+RUN npm run build identity-service
 
 
 FROM node:22-alpine AS production
@@ -17,7 +17,7 @@ WORKDIR /usr/src/app
 
 COPY --from=base /usr/src/app/package.json ./
 COPY --from=base /usr/src/app/package-lock.json ./
-COPY --from=base /usr/src/app/dist/apps/gateway-service ./dist/apps/gateway-service
+COPY --from=base /usr/src/app/dist/apps/identity-service ./dist/apps/identity-service
 COPY --from=base /usr/src/app/dist/libs ./dist/libs
 COPY --from=base /usr/src/app/libs/shared/src/contracts/grpc/proto ./dist/libs/shared/src/contracts/grpc/proto
 
@@ -25,7 +25,7 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 USER appuser
 
-EXPOSE 3000
+EXPOSE 50051
 
-CMD ["node", "dist/apps/gateway-service/src/main"]
+CMD ["node", "dist/apps/identity-service/src/main"]
 
